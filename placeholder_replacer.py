@@ -1,22 +1,31 @@
+import re
 from docx import Document
 
-def replace_placeholders(doc, mappings):
-    for paragraph in doc.paragraphs:
-        for placeholder, value in mappings.items():
-            if placeholder in paragraph.text:
-                paragraph.text = paragraph.text.replace(placeholder, str(value))
+PLACEHOLDER_PATTERN = r"\{\{.*?\}\}"
 
-  
+def replace_placeholders(doc, mappings):
+    
+    # -------- BODY CONTENT --------
     for paragraph in doc.paragraphs:
-        # Step 3: store original paragraph text
         updated_text = paragraph.text
 
-        # Step 4: apply all replacements on the temporary text
         for placeholder, value in mappings.items():
             updated_text = updated_text.replace(placeholder, str(value))
 
-        # Step 5: clear existing runs and add one new run
         if updated_text != paragraph.text:
             paragraph.clear()
             paragraph.add_run(updated_text)
 
+    # -------- HEADER CONTENT --------
+    for section in doc.sections:
+        header = section.header
+
+        for paragraph in header.paragraphs:
+            for run in paragraph.runs:
+                matches = re.findall(PLACEHOLDER_PATTERN, run.text)
+
+                for match in matches:
+                    # Replace ONLY if placeholder exists in mapping
+                    if match in mappings:
+                        run.text = run.text.replace(match, str(mappings[match]))
+                   
