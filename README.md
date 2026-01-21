@@ -1,4 +1,9 @@
-# Phase 1: Phase 1: Project Setup & Basic Document/Data Handling
+## 📊 Progress
+
+Track your progress by checking off tasks as you complete them!
+
+When done with this phase, merge to `main` and move to `phase-2`.
+# Automated Document Generation: From Spreadsheet to Personalized Word Docs
 
 ⏱️ **Estimated Duration:** 3 days
 
